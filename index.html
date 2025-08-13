@@ -18,7 +18,7 @@
 </head>
 <body>
 
-    <div id="create-quiz" class="container">
+    <div id="create-quiz" class="container hidden">
         <h1>Créez votre quiz</h1>
         <p>Remplissez les questions et les réponses. Vous pouvez ajouter autant de questions que vous le souhaitez.</p>
         
@@ -61,15 +61,12 @@
             const scoreParam = urlParams.get('score');
 
             if (quizDataParam) {
-                // Le quiz a été partagé, on l'affiche pour y répondre
                 displayQuiz(quizDataParam);
             } else if (scoreParam) {
-                // Une note a été partagée, on l'affiche
                 displayScore(scoreParam);
             } else {
-                // Mode par défaut : création de quiz
                 document.getElementById('create-quiz').classList.remove('hidden');
-                addQuestion(); // Ajoute une première question au démarrage
+                addQuestion();
             }
         });
 
@@ -149,7 +146,7 @@
                 });
                 form.appendChild(questionDiv);
             });
-            window.currentQuizData = decodedData; // Stocke les données pour la soumission
+            window.currentQuizData = decodedData;
         }
 
         function submitAnswers() {
@@ -164,7 +161,7 @@
             const encodedScore = btoa(JSON.stringify({ score: correctCount, total: questions.length }));
             const shareUrl = window.location.origin + window.location.pathname + `?score=${encodedScore}`;
             
-            displayScore(encodedScore); // Affiche directement le score pour l'utilisateur
+            displayScore(encodedScore);
             document.getElementById('score-link').href = shareUrl;
             document.getElementById('score-link').textContent = shareUrl;
         }
