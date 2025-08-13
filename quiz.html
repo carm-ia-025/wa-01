@@ -1,0 +1,187 @@
+%%writefile quiz.html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Quiz Anonyme</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 20px; line-height: 1.6; max-width: 800px; margin: auto; background-color: #f4f7f6; }
+        .container { background-color: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        input, button, select { display: block; width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; font-size: 1rem; }
+        button { cursor: pointer; background-color: #007bff; color: white; border: none; font-weight: bold; }
+        a { color: #007bff; word-break: break-all; }
+        .hidden { display: none; }
+        h1, h2 { color: #333; }
+        .quiz-question { margin-bottom: 20px; padding: 15px; background-color: #e9f2fa; border-radius: 8px; }
+        .quiz-question label { display: block; margin-bottom: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="create-quiz" class="container">
+        <h1>Créez votre quiz</h1>
+        <p>Remplissez les questions et les réponses. Vous pouvez ajouter autant de questions que vous le souhaitez.</p>
+        
+        <label for="quiz-title">Titre du quiz :</label>
+        <input id="quiz-title" type="text" placeholder="Ex: Quiz de culture générale">
+
+        <div id="questions-container">
+            </div>
+
+        <button onclick="addQuestion()">Ajouter une question</button>
+        <button onclick="generateLink()">Générer le lien de partage</button>
+        
+        <div id="share-link-section" class="hidden">
+            <h2>Partagez ce lien !</h2>
+            <p>Copiez ce lien et envoyez-le à vos amis. Il contient toutes les données de votre quiz.</p>
+            <a id="share-link" href="#"></a>
+        </div>
+    </div>
+
+    <div id="answer-quiz" class="container hidden">
+        <h1 id="quiz-title-display"></h1>
+        <form id="quiz-form"></form>
+        <button onclick="submitAnswers()">Envoyer ma note</button>
+    </div>
+
+    <div id="final-score" class="container hidden">
+        <h2>Votre résultat</h2>
+        <p>Vous avez obtenu <span id="score-display"></span> sur <span id="total-questions"></span>.</p>
+        <button onclick="shareScore()">Partager ma note</button>
+        <div id="share-score-section" class="hidden">
+            <p>Envoyez ce lien à l'auteur du quiz :</p>
+            <a id="score-link" href="#"></a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const quizDataParam = urlParams.get('data');
+            const scoreParam = urlParams.get('score');
+
+            if (quizDataParam) {
+                // Le quiz a été partagé, on l'affiche pour y répondre
+                displayQuiz(quizDataParam);
+            } else if (scoreParam) {
+                // Une note a été partagée, on l'affiche
+                displayScore(scoreParam);
+            } else {
+                // Mode par défaut : création de quiz
+                document.getElementById('create-quiz').classList.remove('hidden');
+                addQuestion(); // Ajoute une première question au démarrage
+            }
+        });
+
+        let quizQuestions = [];
+
+        function addQuestion() {
+            const container = document.getElementById('questions-container');
+            const index = quizQuestions.length;
+            const newQuestion = document.createElement('div');
+            newQuestion.className = 'quiz-question';
+            newQuestion.innerHTML = `
+                <label>Question ${index + 1} :</label>
+                <input type="text" id="q${index}" placeholder="Titre de la question">
+                <label>Réponses :</label>
+                <input type="text" id="q${index}-a0" placeholder="Réponse 1">
+                <input type="text" id="q${index}-a1" placeholder="Réponse 2">
+                <input type="text" id="q${index}-a2" placeholder="Réponse 3">
+                <label>Bonne réponse (choisir le numéro) :</label>
+                <select id="q${index}-correct">
+                    <option value="0">1</option>
+                    <option value="1">2</option>
+                    <option value="2">3</option>
+                </select>
+            `;
+            container.appendChild(newQuestion);
+            quizQuestions.push({});
+        }
+
+        function generateLink() {
+            const quizTitle = document.getElementById('quiz-title').value;
+            const questions = [];
+            for (let i = 0; i < quizQuestions.length; i++) {
+                const questionText = document.getElementById(`q${i}`).value;
+                const answers = [
+                    document.getElementById(`q${i}-a0`).value,
+                    document.getElementById(`q${i}-a1`).value,
+                    document.getElementById(`q${i}-a2`).value
+                ];
+                const correctAnswer = document.getElementById(`q${i}-correct`).value;
+                questions.push({
+                    q: questionText,
+                    a: answers,
+                    c: parseInt(correctAnswer)
+                });
+            }
+            const quizData = { title: quizTitle, questions: questions };
+            const encodedData = btoa(JSON.stringify(quizData));
+            const shareUrl = window.location.origin + window.location.pathname + `?data=${encodedData}`;
+
+            document.getElementById('share-link').href = shareUrl;
+            document.getElementById('share-link').textContent = shareUrl;
+            document.getElementById('share-link-section').classList.remove('hidden');
+        }
+
+        function displayQuiz(encodedData) {
+            document.getElementById('create-quiz').classList.add('hidden');
+            document.getElementById('answer-quiz').classList.remove('hidden');
+
+            const decodedData = JSON.parse(atob(encodedData));
+            const { title, questions } = decodedData;
+            
+            document.getElementById('quiz-title-display').textContent = title;
+            const form = document.getElementById('quiz-form');
+            form.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'quiz-question';
+                questionDiv.innerHTML = `<p><strong>${q.q}</strong></p>`;
+                q.a.forEach((answer, aIndex) => {
+                    questionDiv.innerHTML += `
+                        <label>
+                            <input type="radio" name="q${index}" value="${aIndex}">
+                            ${answer}
+                        </label>
+                    `;
+                });
+                form.appendChild(questionDiv);
+            });
+            window.currentQuizData = decodedData; // Stocke les données pour la soumission
+        }
+
+        function submitAnswers() {
+            const { questions } = window.currentQuizData;
+            let correctCount = 0;
+            questions.forEach((q, index) => {
+                const selectedAnswer = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selectedAnswer && parseInt(selectedAnswer.value) === q.c) {
+                    correctCount++;
+                }
+            });
+            const encodedScore = btoa(JSON.stringify({ score: correctCount, total: questions.length }));
+            const shareUrl = window.location.origin + window.location.pathname + `?score=${encodedScore}`;
+            
+            displayScore(encodedScore); // Affiche directement le score pour l'utilisateur
+            document.getElementById('score-link').href = shareUrl;
+            document.getElementById('score-link').textContent = shareUrl;
+        }
+
+        function displayScore(encodedScore) {
+            document.getElementById('create-quiz').classList.add('hidden');
+            document.getElementById('answer-quiz').classList.add('hidden');
+            document.getElementById('final-score').classList.remove('hidden');
+            const { score, total } = JSON.parse(atob(encodedScore));
+            document.getElementById('score-display').textContent = score;
+            document.getElementById('total-questions').textContent = total;
+        }
+
+        function shareScore() {
+            document.getElementById('share-score-section').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
