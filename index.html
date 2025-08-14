@@ -1,165 +1,193 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Jeu de Plateforme Simple</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Carte Anonyme</title>
     <style>
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            font-family: sans-serif;
-            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
         }
 
         h1 {
             color: #333;
-            margin-bottom: 20px;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
         }
 
-        #game-container {
-            position: relative;
-            width: 800px;
-            height: 600px;
-            background-color: #87CEEB; /* Ciel bleu */
-            border: 2px solid black;
-            overflow: hidden;
+        p {
+            color: #666;
+            margin-bottom: 1.5rem;
         }
 
-        #player {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: red; /* Le personnage */
-            bottom: 0;
-            left: 50px;
-            transition: left 0.1s linear; /* Animation pour un mouvement plus fluide */
+        .input-section {
+            margin-bottom: 2rem;
         }
 
-        .platform {
-            position: absolute;
-            width: 200px;
-            height: 20px;
-            background-color: green; /* Les plateformes */
-            border: 1px solid darkgreen;
+        textarea {
+            width: 90%;
+            height: 100px;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: none;
+            transition: border-color 0.3s;
         }
 
-        /* Styles pour des plateformes personnalisées */
-        #platform1 { left: 0; bottom: 0; width: 800px; height: 30px; }
-        #platform2 { left: 250px; bottom: 150px; }
-        #platform3 { left: 500px; bottom: 300px; }
-        #platform4 { left: 100px; bottom: 450px; }
+        textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        #generateBtn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        #generateBtn:hover {
+            background-color: #0056b3;
+        }
+
+        #card-container {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #share-card {
+            background-color: #e9ecef;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: left;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #card-text {
+            font-size: 1.2rem;
+            color: #444;
+        }
+
+        .logo {
+            font-size: 0.8rem;
+            color: #888;
+            text-align: right;
+            margin-top: 1rem;
+        }
+
+        .actions {
+            margin-top: 1rem;
+        }
+
+        #downloadBtn {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #downloadBtn:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
-    <h1>Mon Jeu de Plateforme 2D</h1>
-    <div id="game-container">
-        <div id="player"></div>
-        <div class="platform" id="platform1"></div>
-        <div class="platform" id="platform2"></div>
-        <div class="platform" id="platform3"></div>
-        <div class="platform" id="platform4"></div>
+
+    <div class="container">
+        <h1>Créez votre carte de questions anonymes</h1>
+        <p>Entrez une question et partagez-la avec vos amis !</p>
+
+        <div class="input-section">
+            <textarea id="questionInput" placeholder="Ex: Tu préfères avoir une vie sans musique ou sans films ?"></textarea>
+            <button id="generateBtn">Créer ma carte</button>
+        </div>
+
+        <div id="card-container">
+            <div id="share-card">
+                <p id="card-text">Votre question s'affichera ici.</p>
+                <div class="logo">De la part d'un ami</div>
+            </div>
+            <div class="actions">
+                <button id="downloadBtn">Télécharger l'image</button>
+            </div>
+        </div>
+
     </div>
 
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const player = document.getElementById('player');
-            const platforms = document.querySelectorAll('.platform');
-            const gameContainer = document.getElementById('game-container');
+            const questionInput = document.getElementById('questionInput');
+            const generateBtn = document.getElementById('generateBtn');
+            const cardText = document.getElementById('card-text');
+            const shareCard = document.getElementById('share-card');
+            const downloadBtn = document.getElementById('downloadBtn');
 
-            let playerX = 50;
-            let playerY = 0;
-            let velocityY = 0;
-            let isJumping = false;
-            let isMovingLeft = false;
-            let isMovingRight = false;
+            // Mettre à jour la carte en temps réel
+            questionInput.addEventListener('input', () => {
+                cardText.innerText = questionInput.value || "Votre question s'affichera ici.";
+            });
 
-            const gravity = 0.5;
-            const jumpStrength = -12;
-            const playerSpeed = 5;
-
-            // Gestion des événements clavier
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowLeft') {
-                    isMovingLeft = true;
-                }
-                if (e.key === 'ArrowRight') {
-                    isMovingRight = true;
-                }
-                if (e.key === 'ArrowUp' && !isJumping) {
-                    isJumping = true;
-                    velocityY = jumpStrength;
+            // Écouteur d'événement pour le bouton de génération
+            generateBtn.addEventListener('click', () => {
+                const question = questionInput.value.trim();
+                if (question) {
+                    // Met à jour le texte de la carte avec la question
+                    cardText.innerText = question;
+                } else {
+                    alert("Veuillez entrer une question.");
                 }
             });
 
-            document.addEventListener('keyup', (e) => {
-                if (e.key === 'ArrowLeft') {
-                    isMovingLeft = false;
-                }
-                if (e.key === 'ArrowRight') {
-                    isMovingRight = false;
-                }
-            });
-
-            function update() {
-                // Mouvement horizontal
-                if (isMovingLeft) {
-                    playerX -= playerSpeed;
-                }
-                if (isMovingRight) {
-                    playerX += playerSpeed;
-                }
-
-                // Appliquer la gravité
-                velocityY += gravity;
-                playerY += velocityY;
-
-                // Collision avec les plateformes
-                let onGround = false;
-                platforms.forEach(platform => {
-                    const rectPlayer = player.getBoundingClientRect();
-                    const rectPlatform = platform.getBoundingClientRect();
-
-                    if (
-                        rectPlayer.bottom <= rectPlatform.top &&
-                        rectPlayer.bottom + velocityY >= rectPlatform.top &&
-                        rectPlayer.right > rectPlatform.left &&
-                        rectPlayer.left < rectPlatform.right
-                    ) {
-                        onGround = true;
-                        playerY = rectPlatform.top - rectPlayer.height - gameContainer.getBoundingClientRect().top;
-                        velocityY = 0;
-                        isJumping = false;
-                    }
+            // Écouteur d'événement pour le bouton de téléchargement
+            downloadBtn.addEventListener('click', () => {
+                // html2canvas prend une capture d'écran de l'élément #share-card
+                html2canvas(shareCard).then(canvas => {
+                    // Crée un lien de téléchargement
+                    const image = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.href = image;
+                    link.download = 'carte-anonyme.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
                 });
-
-                if (!onGround) {
-                    isJumping = true;
-                }
-
-                // Limiter le joueur dans la zone de jeu
-                if (playerX < 0) {
-                    playerX = 0;
-                }
-                if (playerX > gameContainer.clientWidth - player.clientWidth) {
-                    playerX = gameContainer.clientWidth - player.clientWidth;
-                }
-                if (playerY > gameContainer.clientHeight - player.clientHeight) {
-                    playerY = gameContainer.clientHeight - player.clientHeight;
-                    velocityY = 0;
-                    isJumping = false;
-                }
-
-                // Mettre à jour la position du joueur
-                player.style.left = playerX + 'px';
-                player.style.bottom = playerY + 'px';
-
-                requestAnimationFrame(update);
-            }
-
-            update();
+            });
         });
     </script>
 </body>
