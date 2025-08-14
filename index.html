@@ -1,42 +1,166 @@
-<div class="drawing-game">
-  <canvas id="drawing-canvas" width="500" height="400"></canvas>
-  <button onclick="clearCanvas()">Effacer</button>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jeu de Plateforme Simple</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+        }
 
-<script>
-  const canvas = document.getElementById('drawing-canvas');
-  const ctx = canvas.getContext('2d');
-  let isDrawing = false;
-  
-  canvas.addEventListener('mousedown', startDrawing);
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseup', stopDrawing);
-  canvas.addEventListener('mouseout', stopDrawing);
-  
-  function startDrawing(e) {
-    isDrawing = true;
-    draw(e);
-  }
-  
-  function draw(e) {
-    if(!isDrawing) return;
-    
-    ctx.lineWidth = 5;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = '#000';
-    
-    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-  }
-  
-  function stopDrawing() {
-    isDrawing = false;
-    ctx.beginPath();
-  }
-  
-  function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-</script>
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #game-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            background-color: #87CEEB; /* Ciel bleu */
+            border: 2px solid black;
+            overflow: hidden;
+        }
+
+        #player {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red; /* Le personnage */
+            bottom: 0;
+            left: 50px;
+            transition: left 0.1s linear; /* Animation pour un mouvement plus fluide */
+        }
+
+        .platform {
+            position: absolute;
+            width: 200px;
+            height: 20px;
+            background-color: green; /* Les plateformes */
+            border: 1px solid darkgreen;
+        }
+
+        /* Styles pour des plateformes personnalisées */
+        #platform1 { left: 0; bottom: 0; width: 800px; height: 30px; }
+        #platform2 { left: 250px; bottom: 150px; }
+        #platform3 { left: 500px; bottom: 300px; }
+        #platform4 { left: 100px; bottom: 450px; }
+    </style>
+</head>
+<body>
+    <h1>Mon Jeu de Plateforme 2D</h1>
+    <div id="game-container">
+        <div id="player"></div>
+        <div class="platform" id="platform1"></div>
+        <div class="platform" id="platform2"></div>
+        <div class="platform" id="platform3"></div>
+        <div class="platform" id="platform4"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const player = document.getElementById('player');
+            const platforms = document.querySelectorAll('.platform');
+            const gameContainer = document.getElementById('game-container');
+
+            let playerX = 50;
+            let playerY = 0;
+            let velocityY = 0;
+            let isJumping = false;
+            let isMovingLeft = false;
+            let isMovingRight = false;
+
+            const gravity = 0.5;
+            const jumpStrength = -12;
+            const playerSpeed = 5;
+
+            // Gestion des événements clavier
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    isMovingLeft = true;
+                }
+                if (e.key === 'ArrowRight') {
+                    isMovingRight = true;
+                }
+                if (e.key === 'ArrowUp' && !isJumping) {
+                    isJumping = true;
+                    velocityY = jumpStrength;
+                }
+            });
+
+            document.addEventListener('keyup', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    isMovingLeft = false;
+                }
+                if (e.key === 'ArrowRight') {
+                    isMovingRight = false;
+                }
+            });
+
+            function update() {
+                // Mouvement horizontal
+                if (isMovingLeft) {
+                    playerX -= playerSpeed;
+                }
+                if (isMovingRight) {
+                    playerX += playerSpeed;
+                }
+
+                // Appliquer la gravité
+                velocityY += gravity;
+                playerY += velocityY;
+
+                // Collision avec les plateformes
+                let onGround = false;
+                platforms.forEach(platform => {
+                    const rectPlayer = player.getBoundingClientRect();
+                    const rectPlatform = platform.getBoundingClientRect();
+
+                    if (
+                        rectPlayer.bottom <= rectPlatform.top &&
+                        rectPlayer.bottom + velocityY >= rectPlatform.top &&
+                        rectPlayer.right > rectPlatform.left &&
+                        rectPlayer.left < rectPlatform.right
+                    ) {
+                        onGround = true;
+                        playerY = rectPlatform.top - rectPlayer.height - gameContainer.getBoundingClientRect().top;
+                        velocityY = 0;
+                        isJumping = false;
+                    }
+                });
+
+                if (!onGround) {
+                    isJumping = true;
+                }
+
+                // Limiter le joueur dans la zone de jeu
+                if (playerX < 0) {
+                    playerX = 0;
+                }
+                if (playerX > gameContainer.clientWidth - player.clientWidth) {
+                    playerX = gameContainer.clientWidth - player.clientWidth;
+                }
+                if (playerY > gameContainer.clientHeight - player.clientHeight) {
+                    playerY = gameContainer.clientHeight - player.clientHeight;
+                    velocityY = 0;
+                    isJumping = false;
+                }
+
+                // Mettre à jour la position du joueur
+                player.style.left = playerX + 'px';
+                player.style.bottom = playerY + 'px';
+
+                requestAnimationFrame(update);
+            }
+
+            update();
+        });
+    </script>
+</body>
+</html>
