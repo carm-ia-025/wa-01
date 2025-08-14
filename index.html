@@ -1,331 +1,201 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créateur de Quiz Amusant</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fa; /* Ton bleu clair convivial */
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-            color: #333;
-        }
-        .container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            max-width: 100%;
-            width: 600px;
-        }
-        h1 {
-            color: #4a90e2; /* Bleu convivial */
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        h2 {
-            color: #27ae60; /* Vert pour l'amusement */
-            font-size: 20px;
-        }
-        input, select {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            background-color: #4a90e2;
-            color: white;
-            border: none;
-            padding: 12px;
-            cursor: pointer;
-            width: 100%;
-            margin: 10px 0;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #357abd;
-        }
-        .question-block {
-            background: #e8f4fd; /* Fond bleu clair pour questions */
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 10px;
-            border: 1px solid #c9e1f8;
-        }
-        .option-input {
-            display: flex;
-            align-items: center;
-            margin: 5px 0;
-        }
-        .option-input input[type="text"] {
-            flex: 1;
-            margin-right: 10px;
-        }
-        .option-input input[type="radio"] {
-            margin-right: 5px;
-        }
-        #questions-container {
-            margin-bottom: 20px;
-        }
-        #result, #quiz-player {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #d9f2e6; /* Vert clair pour résultats */
-            border-radius: 10px;
-            display: none;
-        }
-        .share-buttons {
-            margin-top: 20px;
-        }
-        .share-button {
-            display: inline-block;
-            margin: 5px;
-            padding: 10px 15px;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        .facebook { background-color: #3b5998; }
-        .instagram { background-color: #e1306c; }
-        .whatsapp { background-color: #25d366; }
-        .twitter { background-color: #1da1f2; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Créateur de QCM Amusant</title>
+  <style>
+    /*–– reset & typo ––*/
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f8ff; color: #333; line-height: 1.4; padding: 20px; }
+    h1 { text-align: center; margin-bottom: 20px; color: #6b5b95; }
+    button { cursor: pointer; border: none; border-radius: 4px; padding: 10px 16px; font-size: 1rem; }
+    button:hover { opacity: .9; }
 
-        /* Responsive pour écrans mobiles */
-        @media (max-width: 600px) {
-            .container {
-                width: 100%;
-                padding: 20px;
-            }
-            body {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 20px;
-            }
-            button, input, select {
-                font-size: 14px;
-                padding: 10px;
-            }
-        }
-    </style>
+    /*–– containers ––*/
+    #builder, #quiz-container { max-width: 600px; margin: 0 auto; }
+    .question-form, .quiz-card { background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
+
+    /*–– builder ––*/
+    .question-form input[type="text"] { width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    .answers { margin-left: 16px; }
+    .answer-item { display: flex; align-items: center; margin-bottom: 6px; }
+    .answer-item input[type="text"] { flex: 1; padding: 6px; margin-left: 6px; margin-right: 6px; border: 1px solid #ccc; border-radius: 4px; }
+    .answer-item button { background: #ff6f61; color: #fff; padding: 4px 8px; }
+
+    #add-question-btn { background: #88b04b; color: #fff; margin-bottom: 20px; }
+    #generate-btn    { background: #6b5b95; color: #fff; width: 100%; }
+
+    /*–– quiz ––*/
+    .quiz-card h2 { margin-bottom: 12px; color: #333; }
+    .quiz-card .options { list-style: none; }
+    .quiz-card .options li { margin-bottom: 8px; }
+    .quiz-card .options button { width: 100%; background: #6b5b95; color: #fff; }
+
+    #score-screen { text-align: center; }
+    #share-btn { background: #ff6f61; color: #fff; margin-top: 12px; }
+    #restart-btn { background: #88b04b; color: #fff; margin-top: 8px; }
+
+    /*–– hidden ––*/
+    .hidden { display: none; }
+  </style>
 </head>
 <body>
-    <div class="container" id="creator-mode">
-        <h1>Créateur de Quiz Amusant !</h1>
-        <p>Crée un quiz fun sur toi, tes amis ou un thème rigolo. Ajoute autant de questions que tu veux, puis partage le lien pour que tes contacts jouent et voient leur score !</p>
-        
-        <input type="text" id="quiz-title" placeholder="Titre du Quiz (ex: Quiz sur Moi !)" required>
-        
-        <div id="questions-container"></div>
-        
-        <button onclick="addQuestion()">Ajouter une Question</button>
-        <button onclick="generateQuiz()">Générer et Partager le Quiz !</button>
-        
-        <div id="result">
-            <h2>Quiz Généré !</h2>
-            <p>Copie ce lien et partage-le. Tes amis pourront jouer directement !</p>
-            <textarea id="quiz-link" rows="3" readonly></textarea>
-            <div class="share-buttons">
-                <a id="shareFb" class="share-button facebook" href="#" target="_blank">Partager sur Facebook</a>
-                <a id="shareIg" class="share-button instagram" href="#" target="_blank">Partager sur Instagram</a>
-                <a id="shareWa" class="share-button whatsapp" href="#" target="_blank">Partager sur WhatsApp</a>
-                <a id="shareTw" class="share-button twitter" href="#" target="_blank">Partager sur X</a>
-            </div>
-        </div>
-    </div>
 
-    <div class="container" id="player-mode">
-        <h1 id="player-title"></h1>
-        <div id="quiz-questions"></div>
-        <button onclick="submitQuiz()">Soumettre les Réponses</button>
-        <div id="quiz-result" style="display: none;">
-            <h2>Ton Score :</h2>
-            <p id="score"></p>
-        </div>
-    </div>
+  <h1>Créateur de QCM Amusant</h1>
 
-    <script>
-        let questionCount = 0;
+  <!-- CONSTRUCTEUR DE QUIZ -->
+  <div id="builder">
+    <div id="questions-container"></div>
+    <button id="add-question-btn">➕ Ajouter une question</button>
+    <button id="generate-btn">🎉 Générer le quiz</button>
+  </div>
 
-        // Fonction pour ajouter une question
-        function addQuestion() {
-            questionCount++;
-            const container = document.getElementById('questions-container');
-            const questionBlock = document.createElement('div');
-            questionBlock.className = 'question-block';
-            questionBlock.innerHTML = `
-                <h2>Question ${questionCount}</h2>
-                <input type="text" class="q-text" placeholder="La question (ex: Quelle est ma couleur préférée ?)" required>
-                <div class="options">
-                    <p>Sélectionne la bonne réponse en cliquant sur le rond à gauche :</p>
-                    <div class="option-input">
-                        <input type="radio" name="correct-q-${questionCount}" value="0" required>
-                        <input type="text" class="option" placeholder="Option 1" required>
-                    </div>
-                    <div class="option-input">
-                        <input type="radio" name="correct-q-${questionCount}" value="1">
-                        <input type="text" class="option" placeholder="Option 2" required>
-                    </div>
-                    <div class="option-input">
-                        <input type="radio" name="correct-q-${questionCount}" value="2">
-                        <input type="text" class="option" placeholder="Option 3" required>
-                    </div>
-                    <div class="option-input">
-                        <input type="radio" name="correct-q-${questionCount}" value="3">
-                        <input type="text" class="option" placeholder="Option 4" required>
-                    </div>
-                </div>
-            `;
-            container.appendChild(questionBlock);
+  <!-- JEU DE QUIZ -->
+  <div id="quiz-container" class="hidden">
+    <!-- questions seront injectées ici -->
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', ()=> {
+    const builder      = document.getElementById('builder');
+    const qContainer   = document.getElementById('questions-container');
+    const addQBtn      = document.getElementById('add-question-btn');
+    const genBtn       = document.getElementById('generate-btn');
+    const quizCont     = document.getElementById('quiz-container');
+    let questionCount  = 0;
+
+    // Fonction pour créer un bloc question
+    function addQuestion(data) {
+      const qIdx = questionCount++;
+      const form = document.createElement('div');
+      form.className = 'question-form';
+      form.dataset.idx = qIdx;
+      form.innerHTML = `
+        <label>Question ${qIdx+1} :</label>
+        <input type="text" class="question-text" placeholder="Écrivez votre question" value="${data?.question||''}">
+        <div class="answers"></div>
+        <button class="add-answer-btn" type="button">➕ Ajouter une réponse</button>
+        <button class="remove-question-btn" type="button" style="background:#ff6f61;color:#fff;margin-top:8px;">🗑 Supprimer la question</button>
+      `;
+      // Ajout du premier champ de réponse par défaut
+      const ansContainer = form.querySelector('.answers');
+      function newAnswer(text, correct) {
+        const aIdx = ansContainer.children.length;
+        const div = document.createElement('div');
+        div.className = 'answer-item';
+        div.innerHTML = `
+          <input type="radio" name="correct-${qIdx}" ${correct? 'checked':''}>
+          <input type="text" placeholder="Texte de la réponse" value="${text||''}">
+          <button type="button" title="Supprimer cette réponse">✖</button>
+        `;
+        // suppression
+        div.querySelector('button').onclick = ()=> div.remove();
+        ansContainer.append(div);
+      }
+      form.querySelector('.add-answer-btn').onclick = ()=> newAnswer();
+      form.querySelector('.remove-question-btn').onclick = ()=> form.remove();
+      // si on passe des données existantes
+      if(data) {
+        data.answers.forEach((t,i)=> newAnswer(t, i===data.correct));
+      } else {
+        newAnswer('', false);
+        newAnswer('', false);
+      }
+      qContainer.append(form);
+    }
+
+    // Initialisation
+    addQuestion();
+
+    addQBtn.onclick = ()=> addQuestion();
+
+    // Générer et lancer le quiz
+    genBtn.onclick = ()=> {
+      const forms = qContainer.querySelectorAll('.question-form');
+      if(forms.length===0) return alert('Ajoutez au moins une question.');
+      const quizData = [];
+      for(const f of forms) {
+        const qText = f.querySelector('.question-text').value.trim();
+        const ansEls = [...f.querySelectorAll('.answer-item')];
+        const answers = ansEls.map(a=> a.querySelector('input[type="text"]').value.trim());
+        const correct = ansEls.findIndex(a=> a.querySelector('input[type="radio"]').checked);
+        if(!qText||answers.some(a=>!a)||correct<0) {
+          return alert('Chaque question doit avoir du texte, au moins deux réponses et une réponse correcte.');
         }
+        quizData.push({ question: qText, answers, correct });
+      }
+      startQuiz(quizData);
+    };
 
-        // Fonction pour générer le quiz
-        function generateQuiz() {
-            const title = document.getElementById('quiz-title').value.trim();
-            if (!title) {
-                alert('Ajoute un titre au quiz !');
-                return;
-            }
+    // Lecture du quiz partagé via URL
+    const params = new URLSearchParams(location.search);
+    if(params.has('quiz')) {
+      try {
+        const data = JSON.parse(decodeURIComponent(params.get('quiz')));
+        builder.classList.add('hidden');
+        startQuiz(data);
+      } catch(e){}
+    }
 
-            const questions = [];
-            const questionBlocks = document.querySelectorAll('.question-block');
-            if (questionBlocks.length === 0) {
-                alert('Ajoute au moins une question !');
-                return;
-            }
+    // Affichage et gestion du quiz
+    function startQuiz(questions) {
+      builder.classList.add('hidden');
+      quizCont.innerHTML = '';
+      quizCont.classList.remove('hidden');
+      let idx=0, score=0;
 
-            let isValid = true;
-            questionBlocks.forEach((block, index) => {
-                const qText = block.querySelector('.q-text').value.trim();
-                const options = Array.from(block.querySelectorAll('.option')).map(opt => opt.value.trim());
-                const correct = block.querySelector(`input[name="correct-q-${index+1}"]:checked`);
-                
-                if (!qText || options.some(opt => !opt) || !correct) {
-                    alert(`Complète la question ${index + 1} correctement (question, options ET bonne réponse) !`);
-                    isValid = false;
-                    return;
-                }
-                questions.push({ q: qText, opts: options, correct: parseInt(correct.value) });
-            });
-
-            if (!isValid) return;
-
-            // Encoder les données en Base64 pour l'URL
-            const quizData = { title, questions };
-            const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(quizData)))); // Gestion des caractères spéciaux
-            const baseUrl = window.location.href.split('?')[0];
-            const quizUrl = `${baseUrl}?quiz=${encodedData}`;
-
-            document.getElementById('quiz-link').value = quizUrl;
-            document.getElementById('result').style.display = 'block';
-
-            // Liens de partage
-            const shareText = encodeURIComponent(`Viens jouer à mon quiz amusant "${title}" et vois ton score !`);
-            const shareUrl = encodeURIComponent(quizUrl);
-            
-            document.getElementById('shareFb').href = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${shareText}`;
-            document.getElementById('shareWa').href = `https://wa.me/?text=${shareText} ${shareUrl}`;
-            document.getElementById('shareTw').href = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
-            // Instagram ne permet pas de partage direct via URL, donc on peut simplement mettre un message
-            document.getElementById('shareIg').href = `https://www.instagram.com/`;
+      function showNext() {
+        quizCont.innerHTML = '';
+        if(idx>=questions.length) {
+          const end = document.createElement('div');
+          end.id = 'score-screen';
+          end.innerHTML = `
+            <h2>🎉 Votre score : ${score} / ${questions.length}</h2>
+            <button id="share-btn">🔗 Partager ce quiz</button>
+            <button id="restart-btn">🔄 Recommencer</button>
+          `;
+          quizCont.append(end);
+          document.getElementById('restart-btn').onclick = ()=> location.reload();
+          document.getElementById('share-btn').onclick = shareQuiz;
+          return;
         }
-
-        // Fonction pour soumettre le quiz en mode Jeu
-        function submitQuiz() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const encodedData = urlParams.get('quiz');
-            if (!encodedData) return;
-
-            const quizData = JSON.parse(decodeURIComponent(escape(atob(encodedData))));
-
-            let score = 0;
-            const questionBlocks = document.querySelectorAll('#quiz-questions .question-block');
-            
-            let allAnswered = true;
-            for (let i = 0; i < questionBlocks.length; i++) {
-                const selected = document.querySelector(`input[name="answer-${i}"]:checked`);
-                if (!selected) {
-                    allAnswered = false;
-                    break;
-                }
-                if (parseInt(selected.value) === quizData.questions[i].correct) {
-                    score++;
-                }
-            }
-
-            if (!allAnswered) {
-                alert('Réponds à toutes les questions avant de soumettre !');
-                return;
-            }
-
-            document.getElementById('score').textContent = `Tu as ${score} sur ${quizData.questions.length} bonnes réponses ! Amuse-toi bien et partage ton score.`;
-            document.getElementById('quiz-result').style.display = 'block';
-        }
-
-        // Fonction pour initialiser l'app au chargement de la page
-        function init() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const encodedData = urlParams.get('quiz');
-
-            document.getElementById('creator-mode').style.display = 'none';
-            document.getElementById('player-mode').style.display = 'none';
-
-            if (encodedData) {
-                // Mode Jeu
-                document.getElementById('player-mode').style.display = 'block';
-                try {
-                    const quizData = JSON.parse(decodeURIComponent(escape(atob(encodedData))));
-                    document.getElementById('player-title').textContent = quizData.title;
-
-                    const questionsContainer = document.getElementById('quiz-questions');
-                    questionsContainer.innerHTML = ''; // Nettoyer pour éviter les doublons
-                    quizData.questions.forEach((q, index) => {
-                        const qDiv = document.createElement('div');
-                        qDiv.className = 'question-block';
-                        qDiv.innerHTML = `
-                            <h2>${q.q}</h2>
-                            ${q.opts.map((opt, optIndex) => `
-                                <div class="option-input">
-                                    <input type="radio" name="answer-${index}" value="${optIndex}" required>
-                                    <label>${opt}</label>
-                                </div>
-                            `).join('')}
-                        `;
-                        questionsContainer.appendChild(qDiv);
-                    });
-                } catch (e) {
-                    alert('Quiz invalide ! Erreur de décodage.');
-                    console.error(e);
-                    // En cas d'erreur, revenir au mode création
-                    window.location.href = window.location.href.split('?')[0];
-                }
-            } else {
-                // Mode Création par défaut
-                document.getElementById('creator-mode').style.display = 'block';
-            }
-        }
-
-        // Ajout de la première question au démarrage pour que l'utilisateur puisse commencer immédiatement
-        document.addEventListener('DOMContentLoaded', () => {
-            init();
-            if (!new URLSearchParams(window.location.search).get('quiz')) {
-                addQuestion();
-            }
+        const q = questions[idx];
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.innerHTML = `<h2>Q${idx+1}. ${q.question}</h2><ul class="options"></ul>`;
+        const ul = card.querySelector('.options');
+        q.answers.forEach((txt,i)=>{
+          const li = document.createElement('li');
+          const btn= document.createElement('button');
+          btn.textContent = txt;
+          btn.onclick = ()=>{
+            if(i===q.correct) score++;
+            idx++;
+            showNext();
+          };
+          li.append(btn);
+          ul.append(li);
         });
-    </script>
+        quizCont.append(card);
+      }
+      showNext();
+
+      // Fonction de partage
+      function shareQuiz() {
+        const payload = encodeURIComponent(JSON.stringify(questions));
+        const shareURL = location.origin + location.pathname + '?quiz=' + payload;
+        if(navigator.share) {
+          navigator.share({ title:'Mon QCM Amusant', text:'Teste mon quiz !', url:shareURL });
+        } else {
+          navigator.clipboard.writeText(shareURL)
+            .then(()=> alert('Lien copié dans le presse-papier !'))
+            .catch(()=> prompt('Copiez ce lien :', shareURL));
+        }
+      }
+    }
+  });
+  </script>
+
 </body>
 </html>
