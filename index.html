@@ -3,352 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShineWa - Logo Redesign</title>
+    <title>Logo ShineWa - Vectoriel</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
         body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            color: #212529;
-            line-height: 1.6;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-        }
-        
-        header {
-            background: white;
-            padding: 30px;
-            text-align: center;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            color: #212529;
-            font-weight: 600;
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            color: #6c757d;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .content {
             display: flex;
-            flex-wrap: wrap;
-            padding: 30px;
-        }
-        
-        .logo-showcase {
-            flex: 1;
-            min-width: 300px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            font-family: 'Arial', sans-serif;
         }
-        
-        .explanation {
-            flex: 1;
-            min-width: 300px;
-            padding: 20px;
-        }
-        
-        h2 {
-            color: #212529;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #3498db;
-            font-weight: 600;
-        }
-        
-        h3 {
-            color: #212529;
-            margin: 25px 0 15px;
-            font-weight: 600;
-        }
-        
-        p {
-            margin-bottom: 15px;
-            color: #495057;
-            line-height: 1.6;
-        }
-        
+
         .logo-container {
-            width: 100%;
-            max-width: 300px;
-            margin: 20px 0;
-        }
-        
-        .logo-preview {
-            width: 100%;
-            background: white;
-            border-radius: 12px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            margin-bottom: 30px;
-            border: 1px solid #e9ecef;
-            padding: 30px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+            gap: 25px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
-        .logo-variations {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .logo-variant {
-            width: 80px;
-            height: 80px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 8px;
-            padding: 10px;
-        }
-        
-        .dark-bg {
-            background: #212529;
-        }
-        
-        .color-bg {
-            background: #3498db;
-        }
-        
-        .principles {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-        
-        .principle {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-        
-        .principle-icon {
-            font-size: 24px;
-            margin-right: 15px;
-            color: #3498db;
-        }
-        
-        .principle-content h4 {
-            margin-bottom: 5px;
-            color: #212529;
-        }
-        
-        .btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px 5px;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-        
-        .btn:hover {
-            background: #2c3e50;
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #3498db;
-            color: #3498db;
-        }
-        
-        .btn-outline:hover {
-            background: #3498db;
-            color: white;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: #f8f9fa;
-            color: #6c757d;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        @media (max-width: 768px) {
-            .content {
-                flex-direction: column;
-            }
+
+        .logo-text {
+            font-size: 3.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            letter-spacing: -2px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>ShineWa Logo Redesign</h1>
-            <p class="subtitle">Un logo moderne et minimaliste inspiré des principes de design des grandes entreprises tech</p>
-        </header>
-        
-        <div class="content">
-            <div class="logo-showcase">
-                <h2>Nouveau Design</h2>
-                
-                <div class="logo-preview">
-                    <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Forme principale : onde stylisée (Wa) avec élément brillant (Shine) -->
-                        <circle cx="100" cy="100" r="80" fill="#3498db" opacity="0.1" />
-                        
-                        <!-- Onde/Wave -->
-                        <path d="M60 120 Q100 80 140 120" stroke="#3498db" stroke-width="8" fill="none" stroke-linecap="round" />
-                        
-                        <!-- Élément brillant/Shine -->
-                        <circle cx="120" cy="80" r="12" fill="#3498db" />
-                        
-                        <!-- Texte minimaliste -->
-                        <text x="100" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#212529">ShineWa</text>
-                    </svg>
-                </div>
-                
-                <div class="logo-variations">
-                    <div class="logo-variant">
-                        <svg width="60" height="60" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M60 120 Q100 80 140 120" stroke="#3498db" stroke-width="8" fill="none" stroke-linecap="round" />
-                            <circle cx="120" cy="80" r="12" fill="#3498db" />
-                        </svg>
-                    </div>
-                    
-                    <div class="logo-variant dark-bg">
-                        <svg width="60" height="60" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M60 120 Q100 80 140 120" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" />
-                            <circle cx="120" cy="80" r="12" fill="white" />
-                        </svg>
-                    </div>
-                    
-                    <div class="logo-variant color-bg">
-                        <svg width="60" height="60" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M60 120 Q100 80 140 120" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" />
-                            <circle cx="120" cy="80" r="12" fill="white" />
-                        </svg>
-                    </div>
-                </div>
-                
-                <div>
-                    <button class="btn" onclick="downloadSVG()">Télécharger le SVG</button>
-                    <button class="btn btn-outline" onclick="copyCode()">Copier le code</button>
-                </div>
-            </div>
-            
-            <div class="explanation">
-                <h2>Principes de design appliqués</h2>
-                
-                <div class="principles">
-                    <div class="principle">
-                        <div class="principle-icon">➖</div>
-                        <div class="principle-content">
-                            <h4>Minimalisme</h4>
-                            <p>Suppression de tous les éléments superflus : dégradés, ombres, éléments décoratifs. Seules les formes essentielles sont conservées.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="principle">
-                        <div class="principle-icon">🔷</div>
-                        <div class="principle-content">
-                            <h4>Formes géométriques simples</h4>
-                            <p>Utilisation de cercles et de courbes simples pour une reconnaissance instantanée et une mémorisation facile.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="principle">
-                        <div class="principle-icon">🎯</div>
-                        <div class="principle-content">
-                            <h4>Design plat (Flat Design)</h4>
-                            <p>Abandon des effets 3D, des reflets et des textures au profit d'un design à deux dimensions, plus moderne et intemporel.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="principle">
-                        <div class="principle-icon">📱</div>
-                        <div class="principle-content">
-                            <h4>Adaptabilité</h4>
-                            <p>Le logo fonctionne à toutes les tailles, du favicon de 16x16px aux panneaux publicitaires, sans perte de qualité ou de lisibilité.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="principle">
-                        <div class="principle-icon">⚡</div>
-                        <div class="principle-content">
-                            <h4>Reconnaissance instantanée</h4>
-                            <p>Formes simples qui permettent au cerveau de traiter et mémoriser le logo plus rapidement (60 000x plus vite que le texte).</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <h3>Éléments symboliques</h3>
-                <p>L'onde représente le "Wa" (onde ou connexion en japonais) et le point lumineux représente le "Shine" (brillance). Ensemble, ils symbolisent une technologie qui brille et qui connecte.</p>
-                
-                <h3>Avantages de ce redesign</h3>
-                <p>Ce logo moderne est plus facilement mémorisable, fonctionne sur tous les supports (y compris les petits écrans), et inspire confiance grâce à son design épuré et professionnel.</p>
-            </div>
-        </div>
-        
-        <footer>
-            <p>Logo ShineWa - Conforme aux standards de design modernes | Design minimaliste, vectoriel et adaptable</p>
-        </footer>
+
+    <div class="logo-container">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="100" height="100" fill="#ffffff" rx="15" />
+            <path d="M20 50 Q35 30 50 50 T80 50" stroke="#007bff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20 50 C30 50 35 40 50 40 C65 40 70 50 80 50" stroke="#007bff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <div class="logo-text">ShineWa</div>
     </div>
 
-    <script>
-        function downloadSVG() {
-            const svgContent = `<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="100" cy="100" r="80" fill="#3498db" opacity="0.1" />
-    <path d="M60 120 Q100 80 140 120" stroke="#3498db" stroke-width="8" fill="none" stroke-linecap="round" />
-    <circle cx="120" cy="80" r="12" fill="#3498db" />
-    <text x="100" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#212529">ShineWa</text>
-</svg>`;
-            
-            const blob = new Blob([svgContent], { type: "image/svg+xml" });
-            const url = URL.createObjectURL(blob);
-            
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "shinewa-modern-logo.svg";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-        
-        function copyCode() {
-            const svgCode = `<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="100" cy="100" r="80" fill="#3498db" opacity="0.1" />
-    <path d="M60 120 Q100 80 140 120" stroke="#3498db" stroke-width="8" fill="none" stroke-linecap="round" />
-    <circle cx="120" cy="80" r="12" fill="#3498db" />
-    <text x="100" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#212529">ShineWa</text>
-</svg>`;
-            
-            navigator.clipboard.writeText(svgCode)
-                .then(() => alert("Code SVG copié dans le presse-papier !"))
-                .catch(err => console.error('Erreur lors de la copie : ', err));
-        }
-    </script>
 </body>
 </html>
