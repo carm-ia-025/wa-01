@@ -3,191 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Carte Anonyme</title>
+    <title>Messagerie Simplifiée</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            padding: 20px;
         }
 
         .container {
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #4285f4;
+            color: white;
+            padding: 15px;
             text-align: center;
-            max-width: 500px;
-            width: 100%;
         }
 
-        h1 {
-            color: #333;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        p {
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-
-        .input-section {
-            margin-bottom: 2rem;
-        }
-
-        textarea {
-            width: 90%;
-            height: 100px;
-            padding: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            resize: none;
-            transition: border-color 0.3s;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #007bff;
-        }
-
-        #generateBtn {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 1rem;
-            transition: background-color 0.3s;
-        }
-
-        #generateBtn:hover {
-            background-color: #0056b3;
-        }
-
-        #card-container {
-            margin-top: 2rem;
+        .main-content {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #share-card {
-            background-color: #e9ecef;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-            min-height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: left;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        #card-text {
-            font-size: 1.2rem;
-            color: #444;
-        }
-
-        .logo {
-            font-size: 0.8rem;
-            color: #888;
-            text-align: right;
-            margin-top: 1rem;
-        }
-
-        .actions {
-            margin-top: 1rem;
-        }
-
-        #downloadBtn {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 0.75rem 1.5rem;
+            flex-grow: 1;
+            background-color: white;
             border-radius: 8px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 15px;
+            overflow: hidden;
         }
 
-        #downloadBtn:hover {
-            background-color: #218838;
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar li:hover, .sidebar li.active {
+            background-color: #e2e6ea;
+        }
+
+        .email-list, .email-details {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .email-item {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .email-item:hover {
+            background-color: #f0f2f5;
+        }
+
+        .email-item .sender {
+            font-weight: bold;
+            color: #3c4043;
+        }
+
+        .email-item .subject {
+            color: #5f6368;
+            margin-top: 5px;
+        }
+
+        .email-item .date {
+            font-size: 0.8em;
+            color: #9aa0a6;
+            margin-top: 5px;
+        }
+
+        .email-details {
+            background-color: #ffffff;
+            border-left: 1px solid #e0e0e0;
+        }
+
+        .email-header {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .details-subject {
+            font-size: 1.5em;
+            color: #3c4043;
+            margin: 0 0 10px;
+        }
+
+        .details-sender {
+            font-size: 0.9em;
+            color: #70757a;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Créez votre carte de questions anonymes</h1>
-        <p>Entrez une question et partagez-la avec vos amis !</p>
-
-        <div class="input-section">
-            <textarea id="questionInput" placeholder="Ex: Tu préfères avoir une vie sans musique ou sans films ?"></textarea>
-            <button id="generateBtn">Créer ma carte</button>
-        </div>
-
-        <div id="card-container">
-            <div id="share-card">
-                <p id="card-text">Votre question s'affichera ici.</p>
-                <div class="logo">De la part d'un ami</div>
+        <header>
+            <h1>Ma Messagerie</h1>
+        </header>
+        <div class="main-content">
+            <nav class="sidebar">
+                <ul>
+                    <li class="active" data-folder="inbox">Boîte de réception</li>
+                    <li data-folder="sent">Envoyés</li>
+                    <li data-folder="drafts">Brouillons</li>
+                    <li data-folder="spam">Spam</li>
+                </ul>
+            </nav>
+            <div class="email-list">
+                <h2>Boîte de réception</h2>
+                <div class="email-item">
+                    <div class="sender">John Doe</div>
+                    <div class="subject">Sujet de l'e-mail 1</div>
+                    <div class="date">20 août 2025</div>
+                </div>
+                <div class="email-item">
+                    <div class="sender">Jane Smith</div>
+                    <div class="subject">Sujet de l'e-mail 2</div>
+                    <div class="date">19 août 2025</div>
+                </div>
+                </div>
+            <div class="email-details" style="display: none;">
+                <div class="email-header">
+                    <h3 class="details-subject"></h3>
+                    <div class="details-sender"></div>
+                </div>
+                <div class="email-body"></div>
             </div>
-            <div class="actions">
-                <button id="downloadBtn">Télécharger l'image</button>
-            </div>
         </div>
-
     </div>
 
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const questionInput = document.getElementById('questionInput');
-            const generateBtn = document.getElementById('generateBtn');
-            const cardText = document.getElementById('card-text');
-            const shareCard = document.getElementById('share-card');
-            const downloadBtn = document.getElementById('downloadBtn');
+            const sidebarItems = document.querySelectorAll('.sidebar li');
+            const emailList = document.querySelector('.email-list');
+            const emailDetails = document.querySelector('.email-details');
+            const folderTitle = emailList.querySelector('h2');
 
-            // Mettre à jour la carte en temps réel
-            questionInput.addEventListener('input', () => {
-                cardText.innerText = questionInput.value || "Votre question s'affichera ici.";
-            });
+            // Données d'e-mails simulées
+            const emails = {
+                inbox: [
+                    { sender: 'John Doe', subject: 'Rendez-vous de la semaine', body: 'Bonjour, je vous confirme notre rendez-vous pour la fin de la semaine.' },
+                    { sender: 'Jane Smith', subject: 'Question sur le projet X', body: 'Salut, j\'ai une question rapide concernant le projet. Pouvez-vous m\'appeler ?' }
+                ],
+                sent: [
+                    { sender: 'Moi', subject: 'Réponse à votre e-mail', body: 'Bonjour, je vous réponds concernant votre question sur le projet.' }
+                ],
+                drafts: [],
+                spam: []
+            };
 
-            // Écouteur d'événement pour le bouton de génération
-            generateBtn.addEventListener('click', () => {
-                const question = questionInput.value.trim();
-                if (question) {
-                    // Met à jour le texte de la carte avec la question
-                    cardText.innerText = question;
-                } else {
-                    alert("Veuillez entrer une question.");
+            // Fonction pour afficher la liste des e-mails
+            function renderEmails(folder) {
+                emailDetails.style.display = 'none';
+                emailList.style.display = 'block';
+                const folderName = document.querySelector(`[data-folder="${folder}"]`).textContent;
+                emailList.innerHTML = `<h2>${folderName}</h2>`;
+                
+                if (emails[folder].length === 0) {
+                    emailList.innerHTML += '<p>Aucun e-mail dans ce dossier.</p>';
+                    return;
                 }
-            });
 
-            // Écouteur d'événement pour le bouton de téléchargement
-            downloadBtn.addEventListener('click', () => {
-                // html2canvas prend une capture d'écran de l'élément #share-card
-                html2canvas(shareCard).then(canvas => {
-                    // Crée un lien de téléchargement
-                    const image = canvas.toDataURL('image/png');
-                    const link = document.createElement('a');
-                    link.href = image;
-                    link.download = 'carte-anonyme.png';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                emails[folder].forEach((email) => {
+                    const emailItem = document.createElement('div');
+                    emailItem.classList.add('email-item');
+                    emailItem.innerHTML = `
+                        <div class="sender">${email.sender}</div>
+                        <div class="subject">${email.subject}</div>
+                        <div class="date">${new Date().toLocaleDateString('fr-FR')}</div>
+                    `;
+                    emailItem.addEventListener('click', () => {
+                        showEmailDetails(email);
+                    });
+                    emailList.appendChild(emailItem);
+                });
+            }
+
+            // Fonction pour afficher les détails d'un e-mail
+            function showEmailDetails(email) {
+                emailList.style.display = 'none';
+                emailDetails.style.display = 'block';
+                document.querySelector('.details-subject').textContent = email.subject;
+                document.querySelector('.details-sender').textContent = email.sender;
+                document.querySelector('.email-body').textContent = email.body;
+            }
+
+            // Événement au clic sur les dossiers de la barre latérale
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelector('.sidebar li.active').classList.remove('active');
+                    item.classList.add('active');
+                    const folder = item.dataset.folder;
+                    renderEmails(folder);
                 });
             });
+
+            // Initialisation : afficher la boîte de réception
+            renderEmails('inbox');
         });
     </script>
 </body>
