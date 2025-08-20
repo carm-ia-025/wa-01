@@ -3,47 +3,393 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logo ShineWa - Vectoriel</title>
+    <title>ShineWa - Logo Élégant</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #212529;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f2f5;
-            font-family: 'Arial', sans-serif;
         }
-
-        .logo-container {
+        
+        .container {
+            max-width: 1000px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            padding: 40px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.4rem;
+            margin-bottom: 12px;
+            color: #212529;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .logo-showcase {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .main-logo {
+            width: 220px;
+            height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-logo:hover {
+            transform: scale(1.03);
+        }
+        
+        .logo-variations {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .logo-variant {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 18px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-variant:hover {
+            transform: scale(1.05);
+        }
+        
+        .dark-bg {
+            background: #212529;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .light-bg {
+            background: #f8f9fa;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .design-principles {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 18px;
+            margin: 40px 0;
+        }
+        
+        h2 {
+            color: #212529;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: #212529;
+            margin: 30px 0 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            color: #495057;
+            line-height: 1.7;
+            text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .principle-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .principle-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .principle-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        
+        .principle-card h4 {
+            margin-bottom: 12px;
+            color: #212529;
+            font-weight: 600;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 25px;
-            padding: 20px;
-            border-radius: 15px;
-            background-color: #fff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            gap: 8px;
         }
-
-        .logo-text {
-            font-size: 3.5em;
-            font-weight: bold;
-            color: #2c3e50;
-            letter-spacing: -2px;
+        
+        .btn:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #3498db;
+            color: #3498db;
+        }
+        
+        .btn-outline:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            .principles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-
-    <div class="logo-container">
-        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="0" y="0" width="100" height="100" fill="#ffffff" rx="15" />
-            <path d="M20 50 Q35 30 50 50 T80 50" stroke="#007bff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M20 50 C30 50 35 40 50 40 C65 40 70 50 80 50" stroke="#007bff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-
-        <div class="logo-text">ShineWa</div>
+    <div class="container">
+        <header>
+            <h1>Logo ShineWa Élégant</h1>
+            <p class="subtitle">Un symbole minimaliste intégrant subtilement les initiales S et W</p>
+        </header>
+        
+        <div class="logo-showcase">
+            <div class="main-logo">
+                <svg width="160" height="160" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Forme de base inspirée des initiales S et W -->
+                    <path d="M60 100 C60 60 100 40 100 70 C100 100 140 100 140 130 C140 160 100 180 100 150 C100 120 60 120 60 100" 
+                          stroke="#3498db" 
+                          stroke-width="10" 
+                          fill="none" 
+                          stroke-linecap="round" />
+                    
+                    <!-- Point lumineux représentant le "Shine" -->
+                    <circle cx="140" cy="70" r="8" fill="#3498db" />
+                </svg>
+            </div>
+            
+            <div class="logo-variations">
+                <div class="logo-variant light-bg">
+                    <svg width="70" height="70" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M60 100 C60 60 100 40 100 70 C100 100 140 100 140 130 C140 160 100 180 100 150 C100 120 60 120 60 100" 
+                              stroke="#3498db" 
+                              stroke-width="10" 
+                              fill="none" 
+                              stroke-linecap="round" />
+                        <circle cx="140" cy="70" r="8" fill="#3498db" />
+                    </svg>
+                </div>
+                
+                <div class="logo-variant dark-bg">
+                    <svg width="70" height="70" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M60 100 C60 60 100 40 100 70 C100 100 140 100 140 130 C140 160 100 180 100 150 C100 120 60 120 60 100" 
+                              stroke="white" 
+                              stroke-width="10" 
+                              fill="none" 
+                              stroke-linecap="round" />
+                        <circle cx="140" cy="70" r="8" fill="white" />
+                    </svg>
+                </div>
+                
+                <div class="logo-variant gradient-bg">
+                    <svg width="70" height="70" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M60 100 C60 60 100 40 100 70 C100 100 140 100 140 130 C140 160 100 180 100 150 C100 120 60 120 60 100" 
+                              stroke="white" 
+                              stroke-width="10" 
+                              fill="none" 
+                              stroke-linecap="round" />
+                        <circle cx="140" cy="70" r="8" fill="white" />
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn" onclick="downloadSVG()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 16L12 4M12 16L8 12M12 16L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4 20H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Télécharger le SVG
+                </button>
+                <button class="btn btn-outline" onclick="copyCode()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M5 15H4C2.89543 15 2 14.1046 2 13V4C2 2.89543 2.89543 2 4 2H13C14.1046 2 15 2.89543 15 4V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Copier le code
+                </button>
+            </div>
+        </div>
+        
+        <div class="design-principles">
+            <h2>Philosophie de Conception</h2>
+            <p>Ce logo incarne l'essence même de ShineWa à travers un design épuré qui intègre subtilement les initiales S et W dans une forme unique et mémorable.</p>
+            
+            <div class="principles-grid">
+                <div class="principle-card">
+                    <div class="principle-icon">➊</div>
+                    <h4>Initiales Discrètes</h4>
+                    <p>Les lettres S et W sont intégrées dans la forme du logo sans être explicitement visibles au premier regard.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-icon">➋</div>
+                    <h4>Équilibre Visuel</h4>
+                    <p>La composition harmonieuse évoque à la fois la fluidité (onde) et la brillance (point lumineux).</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-icon">➌</div>
+                    <h4>Modernité</h4>
+                    <p>Design plat et épuré conforme aux standards contemporains de la tech.</p>
+                </div>
+            </div>
+        </div>
+        
+        <h3>Symbolisme du Logo</h3>
+        <p>La forme fluide représente l'onde ("Wa") et le mouvement, tandis que le point lumineux symbolise l'étincelle ("Shine") et l'innovation. Ensemble, ils créent une identité visuelle qui évoque la connexion et le progrès technologique.</p>
+        
+        <footer>
+            <p>Logo ShineWa • Design minimaliste et symbolique • Conforme aux standards modernes</p>
+        </footer>
     </div>
 
+    <script>
+        function downloadSVG() {
+            const svgContent = `<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <path d="M60 100 C60 60 100 40 100 70 C100 100 140 100 140 130 C140 160 100 180 100 150 C100 120 60 120 60 100" 
+          stroke="#3498db" 
+          stroke-width="10" 
+          fill="none" 
+          stroke-linecap="round" />
+    <circle cx="140" cy="70" r="8" fill="#3498db" />
+</svg>`;
+            
+            const blob = new Blob([svgContent], { type: "image/svg+xml" });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "shinewa-elegant-logo.svg";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function copyCode() {
+            const svgCode = `<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <path d="M60 100 C60 60 100 40 100 70 C100 100 140 100 140 130 C140 160 100 180 100 150 C100 120 60 120 60 100" 
+          stroke="#3498db" 
+          stroke-width="10" 
+          fill="none" 
+          stroke-linecap="round" />
+    <circle cx="140" cy="70" r="8" fill="#3498db" />
+</svg>`;
+            
+            navigator.clipboard.writeText(svgCode)
+                .then(() => alert("Code SVG copié dans le presse-papier !"))
+                .catch(err => console.error('Erreur lors de la copie : ', err));
+        }
+    </script>
 </body>
 </html>
