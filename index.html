@@ -3,221 +3,476 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messagerie Simplifiée</title>
+    <title>Messagerie Gmail-like</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
         }
 
-        .container {
+        body {
+            background-color: #f5f5f5;
+            color: #202124;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            height: 100vh;
         }
 
-        header {
-            background-color: #4285f4;
-            color: white;
-            padding: 15px;
-            text-align: center;
+        /* Barre de titre */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            height: 56px;
         }
 
-        .main-content {
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 16px;
+            color: #5f6368;
+        }
+
+        .logo {
+            font-size: 22px;
+            color: #5f6368;
+            font-weight: 400;
+            flex-grow: 1;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f1f3f4;
+            border-radius: 8px;
+            padding: 8px 16px;
+            margin: 8px 16px;
+            height: 48px;
+        }
+
+        .search-bar input {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 16px;
+            margin-left: 16px;
+        }
+
+        /* Conteneur principal */
+        .main-container {
             display: flex;
             flex-grow: 1;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin: 15px;
             overflow: hidden;
         }
 
+        /* Navigation latérale */
         .sidebar {
-            width: 250px;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-right: 1px solid #e0e0e0;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar li {
-            padding: 12px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-        }
-
-        .sidebar li:hover, .sidebar li.active {
-            background-color: #e2e6ea;
-        }
-
-        .email-list, .email-details {
-            flex-grow: 1;
-            padding: 20px;
+            width: 240px;
+            background-color: #fff;
             overflow-y: auto;
+            padding: 8px 0;
+        }
+
+        .compose-btn {
+            display: flex;
+            align-items: center;
+            margin: 8px 16px;
+            padding: 0 24px 0 16px;
+            height: 48px;
+            border-radius: 24px;
+            background-color: #c2e7ff;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+
+        .compose-btn:hover {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.18), 0 2px 4px rgba(0,0,0,0.24);
+        }
+
+        .folder-list {
+            list-style: none;
+            padding: 8px 0;
+        }
+
+        .folder-item {
+            display: flex;
+            align-items: center;
+            padding: 0 12px 0 26px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #202124;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            margin-right: 16px;
+        }
+
+        .folder-item:hover {
+            background-color: #eaebef;
+        }
+
+        .folder-item.active {
+            background-color: #d3e3fd;
+            color: #001d35;
+            font-weight: 500;
+        }
+
+        .folder-item i {
+            margin-right: 16px;
+            font-size: 18px;
+            color: #5f6368;
+        }
+
+        .folder-item.active i {
+            color: #001d35;
+        }
+
+        /* Liste des emails */
+        .email-list {
+            flex-grow: 1;
+            background-color: #fff;
+            overflow-y: auto;
+            border-radius: 8px 0 0 0;
+            margin: 0 16px 0 0;
+        }
+
+        .email-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0 16px;
+        }
+
+        .tab {
+            padding: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #5f6368;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #0b57d0;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #0b57d0;
+            border-radius: 3px 3px 0 0;
         }
 
         .email-item {
-            border-bottom: 1px solid #e0e0e0;
-            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-bottom: 1px solid #f1f3f4;
             cursor: pointer;
-            transition: background-color 0.2s;
+            height: 56px;
         }
 
         .email-item:hover {
-            background-color: #f0f2f5;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
         }
 
-        .email-item .sender {
-            font-weight: bold;
-            color: #3c4043;
+        .email-item.unread {
+            background-color: #f2f6fc;
         }
 
-        .email-item .subject {
+        .email-checkbox {
+            margin-right: 16px;
+        }
+
+        .email-star {
+            margin-right: 16px;
             color: #5f6368;
-            margin-top: 5px;
         }
 
-        .email-item .date {
-            font-size: 0.8em;
-            color: #9aa0a6;
-            margin-top: 5px;
+        .email-star.starred {
+            color: #f4c20d;
         }
 
-        .email-details {
-            background-color: #ffffff;
-            border-left: 1px solid #e0e0e0;
+        .email-sender {
+            width: 200px;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .email-header {
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+        .email-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .details-subject {
-            font-size: 1.5em;
-            color: #3c4043;
-            margin: 0 0 10px;
+        .email-subject {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
         }
 
-        .details-sender {
-            font-size: 0.9em;
-            color: #70757a;
+        .email-preview {
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        .email-date {
+            width: 100px;
+            text-align: right;
+            font-size: 12px;
+            color: #5f6368;
+            font-weight: 500;
+        }
+
+        .email-item.unread .email-sender,
+        .email-item.unread .email-subject {
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .search-bar {
+                margin-left: 8px;
+                margin-right: 8px;
+            }
+            
+            .email-sender {
+                width: 120px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Ma Messagerie</h1>
-        </header>
-        <div class="main-content">
-            <nav class="sidebar">
-                <ul>
-                    <li class="active" data-folder="inbox">Boîte de réception</li>
-                    <li data-folder="sent">Envoyés</li>
-                    <li data-folder="drafts">Brouillons</li>
-                    <li data-folder="spam">Spam</li>
-                </ul>
-            </nav>
-            <div class="email-list">
-                <h2>Boîte de réception</h2>
-                <div class="email-item">
-                    <div class="sender">John Doe</div>
-                    <div class="subject">Sujet de l'e-mail 1</div>
-                    <div class="date">20 août 2025</div>
-                </div>
-                <div class="email-item">
-                    <div class="sender">Jane Smith</div>
-                    <div class="subject">Sujet de l'e-mail 2</div>
-                    <div class="date">19 août 2025</div>
-                </div>
-                </div>
-            <div class="email-details" style="display: none;">
-                <div class="email-header">
-                    <h3 class="details-subject"></h3>
-                    <div class="details-sender"></div>
-                </div>
-                <div class="email-body"></div>
+    <!-- Barre d'en-tête -->
+    <div class="header">
+        <button class="menu-btn">
+            <i class="material-icons">menu</i>
+        </button>
+        <div class="logo">Messagerie</div>
+        <button class="user-btn">
+            <i class="material-icons">account_circle</i>
+        </button>
+    </div>
+
+    <!-- Barre de recherche -->
+    <div class="search-bar">
+        <i class="material-icons">search</i>
+        <input type="text" placeholder="Rechercher dans les emails">
+    </div>
+
+    <!-- Conteneur principal -->
+    <div class="main-container">
+        <!-- Navigation latérale -->
+        <div class="sidebar">
+            <button class="compose-btn">
+                <i class="material-icons" style="margin-right: 16px;">edit</i>
+                Nouveau message
+            </button>
+
+            <ul class="folder-list">
+                <li class="folder-item active">
+                    <i class="material-icons">inbox</i>
+                    <span>Boîte de réception</span>
+                </li>
+                <li class="folder-item">
+                    <i class="material-icons">star</i>
+                    <span>Importants</span>
+                </li>
+                <li class="folder-item">
+                    <i class="material-icons">send</i>
+                    <span>Envoyés</span>
+                </li>
+                <li class="folder-item">
+                    <i class="material-icons">drafts</i>
+                    <span>Brouillons</span>
+                </li>
+                <li class="folder-item">
+                    <i class="material-icons">delete</i>
+                    <span>Corbeille</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Liste des emails -->
+        <div class="email-list">
+            <div class="email-tabs">
+                <div class="tab active">Principaux</div>
+                <div class="tab">Tous</div>
+                <div class="tab">Non lus</div>
+            </div>
+
+            <div id="email-list-container">
+                <!-- Les emails seront générés par JavaScript -->
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebarItems = document.querySelectorAll('.sidebar li');
-            const emailList = document.querySelector('.email-list');
-            const emailDetails = document.querySelector('.email-details');
-            const folderTitle = emailList.querySelector('h2');
+        // Données des emails (simulées)
+        const emails = [
+            {
+                id: 1,
+                sender: "LinkedIn",
+                subject: "Nouvelles offres d'emploi correspondant à votre profil",
+                preview: "Découvrez 5 nouvelles offres qui pourraient vous intéresser...",
+                date: "14:32",
+                starred: false,
+                unread: true
+            },
+            {
+                id: 2,
+                sender: "Amazon",
+                subject: "Votre commande a été expédiée",
+                preview: "Votre commande #1234567890 est en route. Suivez votre colis...",
+                date: "Hier",
+                starred: true,
+                unread: false
+            },
+            {
+                id: 3,
+                sender: "Jean Dupont",
+                subject: "Réunion de mercredi",
+                preview: "Salut, j'aimerais confirmer notre réunion de mercredi prochain...",
+                date: "Hier",
+                starred: false,
+                unread: false
+            },
+            {
+                id: 4,
+                sender: "GitHub",
+                subject: "Nouvelle activité sur vos dépôts",
+                preview: "Vous avez 3 nouvelles notifications concernant vos projets...",
+                date: "12 juin",
+                starred: false,
+                unread: true
+            },
+            {
+                id: 5,
+                sender: "Marie Martin",
+                subject: "Projet de vacances",
+                preview: "J'ai regardé les options que nous avons discutées...",
+                date: "11 juin",
+                starred: false,
+                unread: false
+            },
+            {
+                id: 6,
+                sender: "Twitter",
+                subject: "Nouvelles notifications",
+                preview: "Vous avez 12 nouvelles notifications. Connectez-vous pour voir...",
+                date: "10 juin",
+                starred: false,
+                unread: false
+            },
+            {
+                id: 7,
+                sender: "Netflix",
+                subject: "Nouveautés de juin",
+                preview: "Découvrez les nouveaux films et séries ajoutés ce mois-ci...",
+                date: "9 juin",
+                starred: false,
+                unread: true
+            },
+            {
+                id: 8,
+                sender: "Pierre Leroy",
+                subject: "Document à signer",
+                preview: "Bonjour, pourriez-vous signer le document joint et me le renvoyer...",
+                date: "8 juin",
+                starred: true,
+                unread: false
+            }
+        ];
 
-            // Données d'e-mails simulées
-            const emails = {
-                inbox: [
-                    { sender: 'John Doe', subject: 'Rendez-vous de la semaine', body: 'Bonjour, je vous confirme notre rendez-vous pour la fin de la semaine.' },
-                    { sender: 'Jane Smith', subject: 'Question sur le projet X', body: 'Salut, j\'ai une question rapide concernant le projet. Pouvez-vous m\'appeler ?' }
-                ],
-                sent: [
-                    { sender: 'Moi', subject: 'Réponse à votre e-mail', body: 'Bonjour, je vous réponds concernant votre question sur le projet.' }
-                ],
-                drafts: [],
-                spam: []
-            };
-
-            // Fonction pour afficher la liste des e-mails
-            function renderEmails(folder) {
-                emailDetails.style.display = 'none';
-                emailList.style.display = 'block';
-                const folderName = document.querySelector(`[data-folder="${folder}"]`).textContent;
-                emailList.innerHTML = `<h2>${folderName}</h2>`;
+        // Fonction pour générer les emails
+        function renderEmails() {
+            const container = document.getElementById('email-list-container');
+            container.innerHTML = '';
+            
+            emails.forEach(email => {
+                const emailElement = document.createElement('div');
+                emailElement.className = `email-item ${email.unread ? 'unread' : ''}`;
                 
-                if (emails[folder].length === 0) {
-                    emailList.innerHTML += '<p>Aucun e-mail dans ce dossier.</p>';
-                    return;
-                }
-
-                emails[folder].forEach((email) => {
-                    const emailItem = document.createElement('div');
-                    emailItem.classList.add('email-item');
-                    emailItem.innerHTML = `
-                        <div class="sender">${email.sender}</div>
-                        <div class="subject">${email.subject}</div>
-                        <div class="date">${new Date().toLocaleDateString('fr-FR')}</div>
-                    `;
-                    emailItem.addEventListener('click', () => {
-                        showEmailDetails(email);
-                    });
-                    emailList.appendChild(emailItem);
+                emailElement.innerHTML = `
+                    <div class="email-checkbox">
+                        <input type="checkbox">
+                    </div>
+                    <div class="email-star ${email.starred ? 'starred' : ''}">
+                        <i class="material-icons">${email.starred ? 'star' : 'star_border'}</i>
+                    </div>
+                    <div class="email-sender">${email.sender}</div>
+                    <div class="email-content">
+                        <div class="email-subject">${email.subject}</div>
+                        <div class="email-preview">${email.preview}</div>
+                    </div>
+                    <div class="email-date">${email.date}</div>
+                `;
+                
+                container.appendChild(emailElement);
+                
+                // Ajouter un événement pour l'étoile
+                const starElement = emailElement.querySelector('.email-star');
+                starElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    email.starred = !email.starred;
+                    renderEmails();
                 });
-            }
-
-            // Fonction pour afficher les détails d'un e-mail
-            function showEmailDetails(email) {
-                emailList.style.display = 'none';
-                emailDetails.style.display = 'block';
-                document.querySelector('.details-subject').textContent = email.subject;
-                document.querySelector('.details-sender').textContent = email.sender;
-                document.querySelector('.email-body').textContent = email.body;
-            }
-
-            // Événement au clic sur les dossiers de la barre latérale
-            sidebarItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    document.querySelector('.sidebar li.active').classList.remove('active');
-                    item.classList.add('active');
-                    const folder = item.dataset.folder;
-                    renderEmails(folder);
+                
+                // Ajouter un événement pour l'email
+                emailElement.addEventListener('click', () => {
+                    email.unread = false;
+                    renderEmails();
                 });
             });
+        }
 
-            // Initialisation : afficher la boîte de réception
-            renderEmails('inbox');
+        // Initialiser l'affichage des emails
+        document.addEventListener('DOMContentLoaded', () => {
+            renderEmails();
+            
+            // Gérer le bouton de nouveau message
+            document.querySelector('.compose-btn').addEventListener('click', () => {
+                alert('Fonctionnalité de nouveau message!');
+            });
+            
+            // Gérer les onglets
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                });
+            });
+            
+            // Gérer les dossiers
+            document.querySelectorAll('.folder-item').forEach(folder => {
+                folder.addEventListener('click', () => {
+                    document.querySelectorAll('.folder-item').forEach(f => f.classList.remove('active'));
+                    folder.classList.add('active');
+                });
+            });
         });
     </script>
 </body>
