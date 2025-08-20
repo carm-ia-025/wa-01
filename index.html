@@ -9,123 +9,40 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #f5f7fa;
-            font-family: 'Arial', sans-serif;
+            height: 100vh;
             margin: 0;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            padding: 30px;
-            margin: 20px;
-            text-align: center;
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 30px;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
         .logo-container {
-            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
-        .usage {
-            max-width: 600px;
-            margin-top: 30px;
-            text-align: left;
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        .usage h2 {
-            color: #2c3e50;
-            margin-top: 0;
-        }
-        .download-btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-        .download-btn:hover {
-            background: #2980b9;
+        .logo-text {
+            font-size: 4em;
+            font-weight: bold;
+            color: #1a73e8; /* Bleu principal */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Logo ShineWa</h1>
-        
-        <div class="logo-container">
-            <svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-                <!-- Fond avec dégradé moderne -->
-                <defs>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#3498db" />
-                        <stop offset="100%" stop-color="#2c3e50" />
-                    </linearGradient>
-                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="4" />
-                        <feOffset dx="4" dy="4" result="offsetblur"/>
-                        <feFlood flood-color="rgba(0,0,0,0.2)"/>
-                        <feComposite in2="offsetblur" operator="in"/>
-                        <feMerge>
-                            <feMergeNode/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                </defs>
-                
-                <!-- Forme principale évoquant à la fois un diamant (brillance) et des ondes (connexion) -->
-                <path d="M150,40 L200,80 L150,120 L100,80 Z" fill="url(#gradient)" filter="url(#shadow)" />
-                
-                <!-- Éclats autour du logo -->
-                <circle cx="180" cy="60" r="5" fill="#f1c40f" />
-                <circle cx="120" cy="100" r="4" fill="#f1c40f" />
-                <circle cx="160" cy="110" r="3" fill="#f1c40f" />
-                <circle cx="140" cy="70" r="4" fill="#f1c40f" />
-                
-                <!-- Lignes connectées évoquant la technologie -->
-                <line x1="150" y1="120" x2="150" y2="160" stroke="#3498db" stroke-width="2" />
-                <line x1="120" y1="140" x2="180" y2="140" stroke="#3498db" stroke-width="2" />
-                
-                <!-- Texte du logo -->
-                <text x="150" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2c3e50">ShineWa</text>
-            </svg>
-        </div>
-        
-        <button class="download-btn" onclick="downloadSVG()">Télécharger le SVG</button>
-        
-        <div class="usage">
-            <h2>Comment utiliser ce logo :</h2>
-            <p>1. <strong>En ligne</strong> : Vous pouvez utiliser ce SVG directement dans votre code HTML comme je l'ai fait ici.</p>
-            <p>2. <strong>Sur les réseaux sociaux</strong> : Téléchargez le SVG et convertissez-le en PNG via des outils comme <a href="https://convertio.co/fr/svg-png/" target="_blank">Convertio</a> pour les plateformes qui ne supportent pas le SVG.</p>
-            <p>3. <strong>Pour l'impression</strong> : Le format vectoriel SVG peut être agrandi à n'importe quelle taille sans perte de qualité, parfait pour les cartes de visite, en-têtes ou supports marketing.</p>
-            <p>4. <strong>Éditer le logo</strong> : Utilisez des outils comme Adobe Illustrator, Inkscape (gratuit) ou même des éditeurs en ligne comme Figma pour modifier les couleurs ou éléments.</p>
-        </div>
-    </div>
 
-    <script>
-        function downloadSVG() {
-            const svg = document.querySelector('svg');
-            const svgData = new XMLSerializer().serializeToString(svg);
-            const blob = new Blob([svgData], { type: "image/svg+xml" });
-            const url = URL.createObjectURL(blob);
-            
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "shinewa-logo.svg";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    </script>
+<div class="logo-container">
+    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="40" fill="#ffffff" />
+        <g stroke="#4285f4" stroke-width="3" stroke-linecap="round">
+            <line x1="50" y1="10" x2="50" y2="90" />
+            <line x1="10" y1="50" x2="90" y2="50" />
+            <line x1="26.33" y1="26.33" x2="73.67" y2="73.67" />
+            <line x1="73.67" y1="26.33" x2="26.33" y2="73.67" />
+        </g>
+        <polygon points="50,40 55,55 70,55 60,65 65,80 50,70 35,80 40,65 30,55 45,55" fill="#fbbc05" />
+    </svg>
+
+    <div class="logo-text">ShineWa</div>
+</div>
+
 </body>
 </html>
